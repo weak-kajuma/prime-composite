@@ -1,9 +1,15 @@
 const keyContainer = document.querySelector('.keys');
 const inputValue = document.querySelector('#inputValue');
 const judgeResult = document.querySelector('#judgeResult');
+const judgeBadge = document.querySelector('#judgeBadge');
+const judgeText = document.querySelector('#judgeText');
 
 const labels = [...Array.from({ length: 14 }, (_, i) => String(i)), 'AC'];
 const tokens = [];
+const specialJudgements = {
+  57: '57は「グロタンディーク素数」の逸話で知られる特別な数です',
+  1729: '1729はタクシー数として有名な特別な数です',
+};
 
 const isPrime = (n) => {
   if (n < 2) return false;
@@ -53,18 +59,43 @@ const formatFactorHtml = (factors) =>
 const setInitialDisplay = () => {
   tokens.length = 0;
   inputValue.textContent = '';
-  judgeResult.textContent = '判定結果: ー';
+  judgeResult.classList.remove('display__result--special');
+  judgeBadge.className = 'display__badge display__badge--default';
+  judgeBadge.textContent = '待機中';
+  judgeText.textContent = '判定結果: ー';
   judgeResult.removeAttribute('aria-label');
 };
 
-const setJudgeResult = (n) => {
+const setJudgeResult = (rawValue) => {
+  if (rawValue === '') {
+    setInitialDisplay();
+    return;
+  }
+
+  const n = Number.parseInt(rawValue, 10);
+
+  if (Object.hasOwn(specialJudgements, n)) {
+    judgeResult.classList.add('display__result--special');
+    judgeBadge.className = 'display__badge display__badge--special';
+    judgeBadge.textContent = '特別表示';
+    judgeText.textContent = specialJudgements[n];
+    judgeResult.setAttribute('aria-label', specialJudgements[n]);
+    return;
+  }
+
+  judgeResult.classList.remove('display__result--special');
+  judgeBadge.className = 'display__badge display__badge--normal';
+  judgeBadge.textContent = '通常判定';
+
   if (n < 2) {
-    judgeResult.textContent = `${n}は素数ではありません`;
+    judgeText.textContent = `${n}は素数ではありません`;
+    judgeResult.setAttribute('aria-label', `${n}は素数ではありません`);
     return;
   }
 
   if (isPrime(n)) {
-    judgeResult.textContent = `${n}は素数です`;
+    judgeText.textContent = `${n}は素数です`;
+    judgeResult.setAttribute('aria-label', `${n}は素数です`);
     return;
   }
 
@@ -72,7 +103,7 @@ const setJudgeResult = (n) => {
   const factorText = formatFactorText(factors);
   const factorHtml = formatFactorHtml(factors);
 
-  judgeResult.innerHTML = `${n} = ${factorHtml}`;
+  judgeText.innerHTML = `${n} = ${factorHtml}`;
   judgeResult.setAttribute('aria-label', `${n} = ${factorText}`);
 };
 
@@ -86,9 +117,7 @@ const updateDisplay = (label) => {
 
   const joined = tokens.join('');
   inputValue.textContent = joined;
-
-  const value = Number.parseInt(joined, 10);
-  setJudgeResult(value);
+  setJudgeResult(joined);
 };
 
 const createKey = (label) => {

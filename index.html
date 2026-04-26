@@ -12,7 +12,10 @@
       <section class="display" aria-live="polite">
         <p class="display__label">入力中の数字</p>
         <p id="inputValue" class="display__input">&nbsp;</p>
-        <p id="judgeResult" class="display__result">判定結果: ー</p>
+        <p id="judgeResult" class="display__result">
+          <span id="judgeBadge" class="display__badge display__badge--default">待機中</span>
+          <span id="judgeText">判定結果: ー</span>
+        </p>
       </section>
 
       <section class="keys" aria-label="キー領域"></section>
