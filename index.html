@@ -15,12 +15,21 @@
         <p class="display__label">入力中の数字</p>
         <p id="inputValue" class="display__input">&nbsp;</p>
         <p id="judgeResult" class="display__result">
-          <span id="judgeBadge" class="display__badge display__badge--default">待機中</span>
           <span id="judgeText">判定結果: ー</span>
         </p>
       </section>
 
       <section class="keys" aria-label="キー領域"></section>
     </main>
+
+    <div id="specialOverlay" class="special-overlay" aria-hidden="true">
+      <canvas id="specialCanvas" class="special-overlay__canvas"></canvas>
+      <div class="special-overlay__glow"></div>
+      <div id="specialRippleLayer" class="special-overlay__ripples"></div>
+      <div class="special-overlay__content">
+        <p class="special-overlay__tag">SPECIAL JUDGEMENT</p>
+        <h2 id="specialTitle" class="special-overlay__title"></h2>
+      </div>
+    </div>
   </body>
 </html>
