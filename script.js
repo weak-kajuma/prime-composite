@@ -7,7 +7,11 @@ const specialCanvas = document.querySelector('#specialCanvas');
 const specialTitle = document.querySelector('#specialTitle');
 const specialRippleLayer = document.querySelector('#specialRippleLayer');
 
-const labels = [...Array.from({ length: 14 }, (_, i) => String(i)), 'AC'];
+const labels = [
+  ...Array.from({ length: 13 }, (_, i) => String(i + 1)),
+  '0',
+  'AC',
+];
 const tokens = [];
 const INPUT_SETTLE_MS = 1000;
 const SPECIAL_DURATION_MS = 2600;
