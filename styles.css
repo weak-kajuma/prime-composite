@@ -14,12 +14,18 @@ body {
   background: linear-gradient(180deg, #e2e8f0, #f8fafc 40%);
 }
 
+body.is-special-shaking .app {
+  animation: appShake 400ms ease-in-out infinite;
+}
+
 .app {
   min-height: 100dvh;
   display: grid;
   grid-template-rows: minmax(160px, 30vh) 1fr;
   gap: 12px;
   padding: 12px;
+  position: relative;
+  z-index: 1;
 }
 
 .display {
@@ -70,31 +76,6 @@ body {
   color: #9a3412;
 }
 
-.display__badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 9999px;
-  padding: 2px 10px;
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.03em;
-}
-
-.display__badge--default {
-  background: #e2e8f0;
-  color: #334155;
-}
-
-.display__badge--normal {
-  background: #dbeafe;
-  color: #1d4ed8;
-}
-
-.display__badge--special {
-  background: #ffedd5;
-  color: #c2410c;
-}
 
 .keys {
   display: grid;
@@ -120,6 +101,97 @@ body {
 
 .key--clear {
   background: #dc2626;
+}
+
+.special-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 320ms ease;
+}
+
+.special-overlay--active {
+  opacity: 1;
+}
+
+.special-overlay__canvas,
+.special-overlay__glow,
+.special-overlay__ripples {
+  position: absolute;
+  inset: 0;
+}
+
+.special-overlay__glow {
+  background: radial-gradient(circle at center, rgb(255 215 0 / 0.45), rgb(0 0 0 / 0.7));
+  mix-blend-mode: screen;
+}
+
+.special-overlay--rama .special-overlay__glow {
+  background: radial-gradient(circle at center, rgb(34 211 238 / 0.35), rgb(0 0 0 / 0.72));
+}
+
+.special-overlay__ripples {
+  display: grid;
+  place-items: center;
+}
+
+.special-overlay__ripple {
+  position: absolute;
+  width: 10vmin;
+  aspect-ratio: 1;
+  border-radius: 999px;
+  border: 3px solid rgb(255 255 255 / 0.5);
+  animation: ripple 1.3s ease-out infinite;
+}
+
+.special-overlay__content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 8px;
+  color: #fff7ed;
+  text-shadow: 0 0 14px rgb(254 240 138 / 0.9), 0 0 36px rgb(245 158 11 / 0.85);
+  animation: zoomPulse 700ms ease-in-out infinite alternate;
+}
+
+.special-overlay--rama .special-overlay__content {
+  color: #ecfeff;
+  text-shadow: 0 0 14px rgb(34 211 238 / 0.95), 0 0 36px rgb(192 132 252 / 0.8);
+}
+
+.special-overlay__tag {
+  margin: 0;
+  letter-spacing: 0.18em;
+  font-size: clamp(0.75rem, 2vw, 1rem);
+}
+
+.special-overlay__title {
+  margin: 0;
+  font-size: clamp(1.7rem, 8vw, 4.4rem);
+  line-height: 1.1;
+  letter-spacing: 0.06em;
+}
+
+@keyframes appShake {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(1px, -1px) rotate(0.3deg); }
+  50% { transform: translate(-1px, 1px) rotate(-0.3deg); }
+  75% { transform: translate(1px, 1px) rotate(0.2deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+@keyframes ripple {
+  from { transform: scale(0.2); opacity: 0.9; }
+  to { transform: scale(8); opacity: 0; }
+}
+
+@keyframes zoomPulse {
+  from { transform: scale(0.95); }
+  to { transform: scale(1.05); }
 }
 
 @media (min-width: 768px) {
