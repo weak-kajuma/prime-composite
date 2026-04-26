@@ -41,14 +41,14 @@ const primeFactorize = (n) => {
 const formatFactorText = (factors) =>
   factors
     .map(([prime, exponent]) => (exponent > 1 ? `${prime}^${exponent}` : `${prime}`))
-    .join('*');
+    .join(' × ');
 
 const formatFactorHtml = (factors) =>
   factors
     .map(([prime, exponent]) =>
       exponent > 1 ? `${prime}<sup>${exponent}</sup>` : `${prime}`,
     )
-    .join('*');
+    .join(' × ');
 
 const setInitialDisplay = () => {
   tokens.length = 0;
